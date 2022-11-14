@@ -1,0 +1,12 @@
+E:\PanTilt123\PanTilt123\obj\Debug\PanTilt123.csproj.AssemblyReference.cache
+E:\PanTilt123\PanTilt123\obj\Debug\PanTilt123.csproj.SuggestedBindingRedirects.cache
+E:\PanTilt123\PanTilt123\obj\Debug\PanTilt123.Properties.Resources.resources
+E:\PanTilt123\PanTilt123\obj\Debug\PanTilt123.csproj.GenerateResource.cache
+E:\PanTilt123\PanTilt123\obj\Debug\PanTilt123.csproj.CoreCompileInputs.cache
+E:\PanTilt123\PanTilt123\bin\Debug\PanTilt123.exe.config
+E:\PanTilt123\PanTilt123\bin\Debug\PanTilt123.exe
+E:\PanTilt123\PanTilt123\bin\Debug\PanTilt123.pdb
+E:\PanTilt123\PanTilt123\obj\Debug\PanTilt123.exe
+E:\PanTilt123\PanTilt123\obj\Debug\PanTilt123.pdb
+E:\PanTilt123\PanTilt123\obj\Debug\PanTilt123.frmMainWindow.resources
+E:\PanTilt123\PanTilt123\obj\Debug\PanTilt123.g.resources

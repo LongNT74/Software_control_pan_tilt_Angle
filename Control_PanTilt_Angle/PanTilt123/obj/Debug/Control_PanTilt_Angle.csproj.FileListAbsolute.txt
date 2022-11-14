@@ -1,0 +1,13 @@
+D:\GitLab\Software_control_pan_tilt_Angle\Control_PanTilt_Angle\PanTilt123\bin\Debug\PanTilt123.exe.config
+D:\GitLab\Software_control_pan_tilt_Angle\Control_PanTilt_Angle\PanTilt123\bin\Debug\PanTilt123.exe
+D:\GitLab\Software_control_pan_tilt_Angle\Control_PanTilt_Angle\PanTilt123\bin\Debug\PanTilt123.pdb
+D:\GitLab\Software_control_pan_tilt_Angle\Control_PanTilt_Angle\PanTilt123\obj\Debug\Control_PanTilt_Angle.csproj.AssemblyReference.cache
+D:\GitLab\Software_control_pan_tilt_Angle\Control_PanTilt_Angle\PanTilt123\obj\Debug\Control_PanTilt_Angle.csproj.SuggestedBindingRedirects.cache
+D:\GitLab\Software_control_pan_tilt_Angle\Control_PanTilt_Angle\PanTilt123\obj\Debug\PanTilt123.g.resources
+D:\GitLab\Software_control_pan_tilt_Angle\Control_PanTilt_Angle\PanTilt123\obj\Debug\PanTilt123.frmMainWindow.resources
+D:\GitLab\Software_control_pan_tilt_Angle\Control_PanTilt_Angle\PanTilt123\obj\Debug\PanTilt123.Properties.Resources.resources
+D:\GitLab\Software_control_pan_tilt_Angle\Control_PanTilt_Angle\PanTilt123\obj\Debug\Control_PanTilt_Angle.csproj.GenerateResource.cache
+D:\GitLab\Software_control_pan_tilt_Angle\Control_PanTilt_Angle\PanTilt123\obj\Debug\Control_PanTilt_Angle.csproj.CoreCompileInputs.cache
+D:\GitLab\Software_control_pan_tilt_Angle\Control_PanTilt_Angle\PanTilt123\obj\Debug\PanTilt123.exe
+D:\GitLab\Software_control_pan_tilt_Angle\Control_PanTilt_Angle\PanTilt123\obj\Debug\PanTilt123.pdb
+D:\GitLab\Software_control_pan_tilt_Angle\Control_PanTilt_Angle\PanTilt123\obj\Debug\PanTilt123.frmLogView.resources
