@@ -235,6 +235,29 @@ namespace PanTilt123
             return isOpenSuccessful;
         }
 
+        private bool CloseComPort()
+        {
+            bool isCloseSuccessful = false;
+
+            try
+            {
+                if ((serialPort != null) && (serialPort.IsOpen == true))
+                {
+                    serialPort.Close();
+                    //mainWindowViewModel.SetComportConnectionStatusIcon(false);
+                    cbBaudrate.Enabled = true;
+                    cbComport.Enabled = true;
+                    isDeviceConnected = false;
+                    isCloseSuccessful = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogViewer.Add(ex.ToString(), LogType.Error);
+            }
+            return isCloseSuccessful;
+        }
+
         private void serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             int numByteToRead = serialPort.BytesToRead;
@@ -451,7 +474,28 @@ namespace PanTilt123
 
         private void btnOpenPort_Click(object sender, EventArgs e)
         {
-
+            if (btnOpenPort.Text.Contains("Open"))
+            {
+                if (mainWindowViewModel.AvailbleComportList.Count > 0)
+                {
+                    if (mainWindowViewModel.SelectedComPortIndex < mainWindowViewModel.AvailbleComportList.Count)
+                    {
+                        string portName = mainWindowViewModel.AvailbleComportList[mainWindowViewModel.SelectedComPortIndex];
+                        if (OpenComport(portName, Properties.Settings.Default.ComportBaud) == true)
+                        {
+                            btnOpenPort.Text = "Close";
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (CloseComPort() == true)
+                {
+                    btnOpenPort.Text = "Open";
+                    mainWindowViewModel.AvailbleComportList = GetAllAvailblePorts();
+                }
+            }
         }
 
         private void btnSetting_Click(object sender, EventArgs e)
@@ -468,6 +512,298 @@ namespace PanTilt123
             windowLogViewer.Width = this.Width - 20;
             windowLogViewer.Height = this.Height - 220 - 50;
             windowLogViewer.Show();
+        }
+
+        private void tbSetPan_ValueChanged(object sender, EventArgs e)
+        {
+            txtSetPan.Text = tbSetPan.Value.ToString();
+        }
+
+        private void trackBar2_ValueChanged(object sender, EventArgs e)
+        {
+            txtSetTilt.Text = tbSetTilt.Value.ToString();
+        }
+
+        private void btnSetAddr_Click(object sender, EventArgs e)
+        {
+            if (isDeviceConnected)
+            {
+                // Step1: build message
+                byte[] newAddr = new byte[4];
+                string[] tokens = txtAddress.Text.ToString().Split('.');
+                newAddr[0] = Convert.ToByte(tokens[0]);
+                newAddr[1] = Convert.ToByte(tokens[1]);
+                newAddr[2] = Convert.ToByte(tokens[2]);
+                newAddr[3] = Convert.ToByte(tokens[3]);
+                byte[] requestPacketBuffer = Rs485PacketParser.BuildMsgSetAddress(newAddr);
+                // Step2: put message to request queue
+                queueTxPacket.Enqueue(requestPacketBuffer);
+            }
+        }
+
+        private void btnSetPanAngle_Click(object sender, EventArgs e)
+        {
+            if (isDeviceConnected)
+            {
+                // Step1: build message
+                if (mainWindowViewModel.TxPanAngle > 200) mainWindowViewModel.TxPanAngle = 200;
+                if (mainWindowViewModel.TxPanAngle < -200) mainWindowViewModel.TxPanAngle = -200;
+                byte[] requestPacketBuffer = Rs485PacketParser.BuildMsgSetAngleMotor(MotorIndex.PAN_MOTOR, (float)mainWindowViewModel.TxPanAngle);
+                // Step2: put message to request queue
+                queueTxPacket.Enqueue(requestPacketBuffer);
+            }
+        }
+
+        private void btnGetPanAngle_Click(object sender, EventArgs e)
+        {
+            if (isDeviceConnected)
+            {
+                // Step1: build message
+                byte[] requestPacketBuffer = Rs485PacketParser.BuildMsgGetAngleMotor(MotorIndex.PAN_MOTOR);
+                // Step2: put message to request queue
+                queueTxPacket.Enqueue(requestPacketBuffer);
+            }
+        }
+
+        private void btnSetTitl_Click(object sender, EventArgs e)
+        {
+            if (isDeviceConnected)
+            {
+                // Step1: build message
+                if (mainWindowViewModel.TxTiltAngle > 80) mainWindowViewModel.TxTiltAngle = 80;
+                if (mainWindowViewModel.TxTiltAngle < -80) mainWindowViewModel.TxTiltAngle = -80;
+                byte[] requestPacketBuffer = Rs485PacketParser.BuildMsgSetAngleMotor(MotorIndex.TILT_MOTOR, (float)mainWindowViewModel.TxTiltAngle);
+                // Step2: put message to request queue
+                queueTxPacket.Enqueue(requestPacketBuffer);
+            }
+        }
+
+        private void btnGetTilt_Click(object sender, EventArgs e)
+        {
+            if (isDeviceConnected)
+            {
+                // Step1: build message
+                byte[] requestPacketBuffer = Rs485PacketParser.BuildMsgGetAngleMotor(MotorIndex.TILT_MOTOR);
+                // Step2: put message to request queue
+                queueTxPacket.Enqueue(requestPacketBuffer);
+            }
+        }
+
+        private void btnMovePanToLeft_Click(object sender, EventArgs e)
+        {
+            if (isDeviceConnected)
+            {
+                // Step1: build message
+                mainWindowViewModel.TxPanAngle -= mainWindowViewModel.TxAngleStepSize;
+                if (mainWindowViewModel.TxPanAngle < -200) mainWindowViewModel.TxPanAngle = -200;
+                byte[] requestPacketBuffer = Rs485PacketParser.BuildMsgSetAngleMotor(MotorIndex.PAN_MOTOR, (float)mainWindowViewModel.TxPanAngle);
+                // Step2: put message to request queue
+                queueTxPacket.Enqueue(requestPacketBuffer);
+            }
+        }
+
+        private void btnMovePanToUp_Click(object sender, EventArgs e)
+        {
+            if (isDeviceConnected)
+            {
+                // Step1: build message
+                mainWindowViewModel.TxTiltAngle += mainWindowViewModel.TxAngleStepSize;
+                if (mainWindowViewModel.TxTiltAngle > 80) mainWindowViewModel.TxTiltAngle = 80;
+                byte[] requestPacketBuffer = Rs485PacketParser.BuildMsgSetAngleMotor(MotorIndex.TILT_MOTOR, (float)mainWindowViewModel.TxTiltAngle);
+                // Step2: put message to request queue
+                queueTxPacket.Enqueue(requestPacketBuffer);
+            }
+        }
+
+        private void btnMovePanToDown_Click(object sender, EventArgs e)
+        {
+            if (isDeviceConnected)
+            {
+                // Step1: build message
+                mainWindowViewModel.TxTiltAngle -= mainWindowViewModel.TxAngleStepSize;
+                if (mainWindowViewModel.TxTiltAngle < -80) mainWindowViewModel.TxTiltAngle = -80;
+                byte[] requestPacketBuffer = Rs485PacketParser.BuildMsgSetAngleMotor(MotorIndex.TILT_MOTOR, (float)mainWindowViewModel.TxTiltAngle);
+                // Step2: put message to request queue
+                queueTxPacket.Enqueue(requestPacketBuffer);
+            }
+        }
+
+        private void btnMovePanToRight_Click(object sender, EventArgs e)
+        {
+            if (isDeviceConnected)
+            {
+                // Step1: build message
+                mainWindowViewModel.TxPanAngle += mainWindowViewModel.TxAngleStepSize;
+                if (mainWindowViewModel.TxPanAngle > 200) mainWindowViewModel.TxPanAngle = 200;
+
+                byte[] requestPacketBuffer = Rs485PacketParser.BuildMsgSetAngleMotor(MotorIndex.PAN_MOTOR, (float)mainWindowViewModel.TxPanAngle);
+                // Step2: put message to request queue
+                queueTxPacket.Enqueue(requestPacketBuffer);
+            }
+        }
+
+        private void btnEnumerateDevices_Click(object sender, EventArgs e)
+        {
+            // Step1: clear table
+            MainWindowViewModel.GetInstance().DeviceEnumrationInfoList.Clear();
+            // Step2: send broadcast command to scan device on rs485 bus
+            byte[] deviceInfoBroadcastPacketBuffer = Rs485PacketParser.BuildMsgBroadcast();
+            queueTxPacket.Enqueue(deviceInfoBroadcastPacketBuffer);
+            devieEnumrationTimeCounter = 0;
+            mainWindowViewModel.IsDeviceEnumrationStarted = true;
+        }
+
+        private void btnReadSelectedDeviceInfo_Click(object sender, EventArgs e)
+        {
+            byte[] deviceInfoBroadcastPacketBuffer = Rs485PacketParser.BuildMsgDeviceInfo();
+            queueTxPacket.Enqueue(deviceInfoBroadcastPacketBuffer);
+        }
+
+        private void btnGoHome_Click(object sender, EventArgs e)
+        {
+            if (isDeviceConnected)
+            {
+                // Step1: build message
+                byte[] requestPacketBuffer = Rs485PacketParser.BuildMsgSystemGoHome();
+                // Step2: put message to request queue
+                queueTxPacket.Enqueue(requestPacketBuffer);
+                LogViewer.Add(string.Format("Send message set go home"), LogType.Info);
+            }
+        }
+
+        private void btnPanGoHome_Click(object sender, EventArgs e)
+        {
+            if (isDeviceConnected)
+            {
+                // Step1: build message
+                byte[] requestPacketBuffer = Rs485PacketParser.BuildMsgGoHomeMotor(MotorIndex.PAN_MOTOR);
+                // Step2: put message to request queue
+                queueTxPacket.Enqueue(requestPacketBuffer);
+                LogViewer.Add(string.Format("Send message set pan go home"), LogType.Info);
+            }
+        }
+
+        private void btnTiltGoHome_Click(object sender, EventArgs e)
+        {
+            if (isDeviceConnected)
+            {
+                // Step1: build message
+                byte[] requestPacketBuffer = Rs485PacketParser.BuildMsgGoHomeMotor(MotorIndex.TILT_MOTOR);
+                // Step2: put message to request queue
+                queueTxPacket.Enqueue(requestPacketBuffer);
+                LogViewer.Add(string.Format("Send message set tilt go home"), LogType.Info);
+            }
+        }
+
+        private void btnPanStop_Click(object sender, EventArgs e)
+        {
+            if (isDeviceConnected)
+            {
+                // Step1: build message
+                byte[] requestPacketBuffer = Rs485PacketParser.BuildMsgStopMotor(MotorIndex.PAN_MOTOR);
+                // Step2: put message to request queue
+                queueTxPacket.Enqueue(requestPacketBuffer);
+                LogViewer.Add(string.Format("Send message set pan stop"), LogType.Info);
+            }
+        }
+
+        private void btnTiltStop_Click(object sender, EventArgs e)
+        {
+            if (isDeviceConnected)
+            {
+                // Step1: build message
+                byte[] requestPacketBuffer = Rs485PacketParser.BuildMsgStopMotor(MotorIndex.TILT_MOTOR);
+                // Step2: put message to request queue
+                queueTxPacket.Enqueue(requestPacketBuffer);
+                LogViewer.Add(string.Format("Send message set tilt stop"), LogType.Info);
+            }
+        }
+
+        private void btnUpdateFirmwareToSelectedDevice_Click(object sender, EventArgs e)
+        {
+            if (isDeviceConnected == false) return;
+            if (MainWindowViewModel.GetInstance().BtnFirmwareUpdateContent == "Update FW")
+            {
+                // Check firmware was opened successfully or not
+                if (bootloaderProcessor.IsValid == false)
+                {
+                    System.Windows.Forms.MessageBox.Show("File firmware không hợp lệ. Hãy mở lại.", "Invalid Firmware", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    var msgBoxRet = System.Windows.Forms.MessageBox.Show(string.Format("Cập nhật firmware lên phiên bản {0}.{1}.{2}",
+                        bootloaderProcessor.NewFirmwareVersion[0], bootloaderProcessor.NewFirmwareVersion[1],
+                        bootloaderProcessor.NewFirmwareVersion[2]), "Cornfirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (msgBoxRet == DialogResult.Yes)
+                    {
+                        var ret = bootloaderProcessor.StartDFU();
+                        MainWindowViewModel.GetInstance().BtnFirmwareUpdateContent = "Stop";
+                    }
+                }
+            }
+            else
+            {
+                var msgBoxRet = System.Windows.Forms.MessageBox.Show("Hủy bỏ quá trình cập nhật firmware có thể làm lỗi thiết bị?", "Cancel DFU Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Error);
+                if (msgBoxRet == DialogResult.Yes)
+                {
+                    bootloaderProcessor.StopDFU();
+                    //btnUpdateFirmware.Content = "Update FW";
+                    MainWindowViewModel.GetInstance().BtnFirmwareUpdateContent = "Update FW";
+                }
+            }
+        }
+
+        private void btnOpenFirmwareFile_Click(object sender, EventArgs e)
+        {
+            MainWindowViewModel.GetInstance().BtnFirmwareUpdateContent = "Update FW";
+            System.Windows.Forms.OpenFileDialog openFile = new System.Windows.Forms.OpenFileDialog();
+            openFile.Filter = "Binary firmware files (*.bin) |*.bin";
+            string fileDir = string.Empty;
+            try
+            {
+                fileDir = System.IO.Path.GetDirectoryName(Properties.Settings.Default.LastOpenFirmwareFilePath);
+            }
+            catch (Exception ex)
+            {
+                LogViewer.Add(ex.ToString(), LogType.Error);
+            }
+            if (Directory.Exists(fileDir))
+            {
+                openFile.InitialDirectory = fileDir;
+            }
+
+            System.Windows.Forms.DialogResult result = openFile.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                try
+                {
+                    if (bootloaderProcessor.ReadBinaryFile(openFile.FileName) == true)
+                    {
+                        System.Windows.Forms.MessageBox.Show(string.Format("Mở file firmware thành công, version: {0}.{1}.{2}",
+                            bootloaderProcessor.NewFirmwareVersion[0],
+                            bootloaderProcessor.NewFirmwareVersion[1],
+                            bootloaderProcessor.NewFirmwareVersion[2]), "Open File Successfully", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+
+                        LogViewer.Add(String.Format("Read file successfully, fimware version {0}.{1}.{2}",
+                            bootloaderProcessor.NewFirmwareVersion[0],
+                            bootloaderProcessor.NewFirmwareVersion[1],
+                            bootloaderProcessor.NewFirmwareVersion[2]), LogType.Info);
+                        LogViewer.Add("Total packet: " + bootloaderProcessor.TotalPacket.ToString(), LogType.Info);
+
+                        // Save file name
+                        Properties.Settings.Default.LastOpenFirmwareFilePath = openFile.FileName;
+                        Properties.Settings.Default.Save();
+                    }
+                    else
+                    {
+                        System.Windows.Forms.MessageBox.Show("Không thể đọc file firmware", "Open File Error");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogViewer.Add(ex.ToString(), LogType.Error);
+                }
+            }
         }
     }
 }

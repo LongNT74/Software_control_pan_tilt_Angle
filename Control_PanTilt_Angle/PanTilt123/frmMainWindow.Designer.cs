@@ -48,9 +48,9 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.trackBar2 = new System.Windows.Forms.TrackBar();
+            this.tbSetTilt = new System.Windows.Forms.TrackBar();
             this.btnSetTitl = new System.Windows.Forms.Button();
-            this.txtBoxSetTilt = new System.Windows.Forms.TextBox();
+            this.txtSetTilt = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.btnGetPanAngle = new System.Windows.Forms.Button();
             this.txtGetAngle = new System.Windows.Forms.TextBox();
@@ -75,8 +75,8 @@
             this.btnReadSelectedDeviceInfo = new System.Windows.Forms.Button();
             this.btnEnumerateDevices = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.btnTiltGoHome = new System.Windows.Forms.Button();
+            this.btnPanGoHome = new System.Windows.Forms.Button();
             this.btnTiltStop = new System.Windows.Forms.Button();
             this.btnPanStop = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -97,7 +97,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataBinding)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbSetTilt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbSetPan)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDeviceEnumrationInfo)).BeginInit();
@@ -162,6 +162,7 @@
             this.btnSetAddr.TabIndex = 4;
             this.btnSetAddr.Text = "Set Address";
             this.btnSetAddr.UseVisualStyleBackColor = true;
+            this.btnSetAddr.Click += new System.EventHandler(this.btnSetAddr_Click);
             // 
             // groupBox1
             // 
@@ -177,9 +178,9 @@
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.trackBar2);
+            this.groupBox1.Controls.Add(this.tbSetTilt);
             this.groupBox1.Controls.Add(this.btnSetTitl);
-            this.groupBox1.Controls.Add(this.txtBoxSetTilt);
+            this.groupBox1.Controls.Add(this.txtSetTilt);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.btnGetPanAngle);
             this.groupBox1.Controls.Add(this.txtGetAngle);
@@ -229,6 +230,7 @@
             this.btnMovePanToDown.TabIndex = 26;
             this.btnMovePanToDown.Text = ".";
             this.btnMovePanToDown.UseVisualStyleBackColor = true;
+            this.btnMovePanToDown.Click += new System.EventHandler(this.btnMovePanToDown_Click);
             // 
             // btnMovePanToRight
             // 
@@ -238,6 +240,7 @@
             this.btnMovePanToRight.TabIndex = 25;
             this.btnMovePanToRight.Text = ">";
             this.btnMovePanToRight.UseVisualStyleBackColor = true;
+            this.btnMovePanToRight.Click += new System.EventHandler(this.btnMovePanToRight_Click);
             // 
             // btnMovePanToUp
             // 
@@ -247,6 +250,7 @@
             this.btnMovePanToUp.TabIndex = 24;
             this.btnMovePanToUp.Text = "^";
             this.btnMovePanToUp.UseVisualStyleBackColor = true;
+            this.btnMovePanToUp.Click += new System.EventHandler(this.btnMovePanToUp_Click);
             // 
             // btnMovePanToLeft
             // 
@@ -256,6 +260,7 @@
             this.btnMovePanToLeft.TabIndex = 6;
             this.btnMovePanToLeft.Text = "<";
             this.btnMovePanToLeft.UseVisualStyleBackColor = true;
+            this.btnMovePanToLeft.Click += new System.EventHandler(this.btnMovePanToLeft_Click);
             // 
             // btnGetTilt
             // 
@@ -266,6 +271,7 @@
             this.btnGetTilt.TabIndex = 23;
             this.btnGetTilt.Text = "Get";
             this.btnGetTilt.UseVisualStyleBackColor = true;
+            this.btnGetTilt.Click += new System.EventHandler(this.btnGetTilt_Click);
             // 
             // txtGetTilt
             // 
@@ -306,17 +312,18 @@
             this.label5.TabIndex = 19;
             this.label5.Text = "+80";
             // 
-            // trackBar2
+            // tbSetTilt
             // 
-            this.trackBar2.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.DataBinding, "TxTiltAngle", true));
-            this.trackBar2.LargeChange = 1;
-            this.trackBar2.Location = new System.Drawing.Point(576, 32);
-            this.trackBar2.Maximum = 80;
-            this.trackBar2.Minimum = -80;
-            this.trackBar2.Name = "trackBar2";
-            this.trackBar2.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trackBar2.Size = new System.Drawing.Size(56, 179);
-            this.trackBar2.TabIndex = 18;
+            this.tbSetTilt.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.DataBinding, "TxTiltAngle", true));
+            this.tbSetTilt.LargeChange = 1;
+            this.tbSetTilt.Location = new System.Drawing.Point(576, 32);
+            this.tbSetTilt.Maximum = 80;
+            this.tbSetTilt.Minimum = -80;
+            this.tbSetTilt.Name = "tbSetTilt";
+            this.tbSetTilt.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.tbSetTilt.Size = new System.Drawing.Size(56, 179);
+            this.tbSetTilt.TabIndex = 18;
+            this.tbSetTilt.ValueChanged += new System.EventHandler(this.trackBar2_ValueChanged);
             // 
             // btnSetTitl
             // 
@@ -327,15 +334,16 @@
             this.btnSetTitl.TabIndex = 17;
             this.btnSetTitl.Text = "Set";
             this.btnSetTitl.UseVisualStyleBackColor = true;
+            this.btnSetTitl.Click += new System.EventHandler(this.btnSetTitl_Click);
             // 
-            // txtBoxSetTilt
+            // txtSetTilt
             // 
-            this.txtBoxSetTilt.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.DataBinding, "TxTiltAngle", true, System.Windows.Forms.DataSourceUpdateMode.OnValidation, "0"));
-            this.txtBoxSetTilt.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBoxSetTilt.Location = new System.Drawing.Point(486, 103);
-            this.txtBoxSetTilt.Name = "txtBoxSetTilt";
-            this.txtBoxSetTilt.Size = new System.Drawing.Size(70, 36);
-            this.txtBoxSetTilt.TabIndex = 16;
+            this.txtSetTilt.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.DataBinding, "TxTiltAngle", true, System.Windows.Forms.DataSourceUpdateMode.OnValidation, "0"));
+            this.txtSetTilt.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSetTilt.Location = new System.Drawing.Point(486, 103);
+            this.txtSetTilt.Name = "txtSetTilt";
+            this.txtSetTilt.Size = new System.Drawing.Size(70, 36);
+            this.txtSetTilt.TabIndex = 16;
             // 
             // label4
             // 
@@ -356,6 +364,7 @@
             this.btnGetPanAngle.TabIndex = 14;
             this.btnGetPanAngle.Text = "Get";
             this.btnGetPanAngle.UseVisualStyleBackColor = true;
+            this.btnGetPanAngle.Click += new System.EventHandler(this.btnGetPanAngle_Click);
             // 
             // txtGetAngle
             // 
@@ -406,6 +415,7 @@
             this.tbSetPan.Name = "tbSetPan";
             this.tbSetPan.Size = new System.Drawing.Size(270, 56);
             this.tbSetPan.TabIndex = 9;
+            this.tbSetPan.ValueChanged += new System.EventHandler(this.tbSetPan_ValueChanged);
             // 
             // btnSetPanAngle
             // 
@@ -416,6 +426,7 @@
             this.btnSetPanAngle.TabIndex = 8;
             this.btnSetPanAngle.Text = "Set";
             this.btnSetPanAngle.UseVisualStyleBackColor = true;
+            this.btnSetPanAngle.Click += new System.EventHandler(this.btnSetPanAngle_Click);
             // 
             // txtSetPan
             // 
@@ -541,6 +552,7 @@
             this.btnGoHome.TabIndex = 2;
             this.btnGoHome.Text = "Go Home";
             this.btnGoHome.UseVisualStyleBackColor = true;
+            this.btnGoHome.Click += new System.EventHandler(this.btnGoHome_Click);
             // 
             // btnReadSelectedDeviceInfo
             // 
@@ -551,6 +563,7 @@
             this.btnReadSelectedDeviceInfo.TabIndex = 1;
             this.btnReadSelectedDeviceInfo.Text = "Read Info";
             this.btnReadSelectedDeviceInfo.UseVisualStyleBackColor = true;
+            this.btnReadSelectedDeviceInfo.Click += new System.EventHandler(this.btnReadSelectedDeviceInfo_Click);
             // 
             // btnEnumerateDevices
             // 
@@ -561,12 +574,13 @@
             this.btnEnumerateDevices.TabIndex = 0;
             this.btnEnumerateDevices.Text = "Scan";
             this.btnEnumerateDevices.UseVisualStyleBackColor = true;
+            this.btnEnumerateDevices.Click += new System.EventHandler(this.btnEnumerateDevices_Click);
             // 
             // groupBox3
             // 
             this.groupBox3.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.groupBox3.Controls.Add(this.button3);
-            this.groupBox3.Controls.Add(this.button4);
+            this.groupBox3.Controls.Add(this.btnTiltGoHome);
+            this.groupBox3.Controls.Add(this.btnPanGoHome);
             this.groupBox3.Controls.Add(this.btnTiltStop);
             this.groupBox3.Controls.Add(this.btnPanStop);
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -577,25 +591,27 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Advanced Control";
             // 
-            // button3
+            // btnTiltGoHome
             // 
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(334, 45);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(237, 47);
-            this.button3.TabIndex = 5;
-            this.button3.Text = "Tilt Go home";
-            this.button3.UseVisualStyleBackColor = true;
+            this.btnTiltGoHome.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnTiltGoHome.Location = new System.Drawing.Point(334, 45);
+            this.btnTiltGoHome.Name = "btnTiltGoHome";
+            this.btnTiltGoHome.Size = new System.Drawing.Size(237, 47);
+            this.btnTiltGoHome.TabIndex = 5;
+            this.btnTiltGoHome.Text = "Tilt Go home";
+            this.btnTiltGoHome.UseVisualStyleBackColor = true;
+            this.btnTiltGoHome.Click += new System.EventHandler(this.btnTiltGoHome_Click);
             // 
-            // button4
+            // btnPanGoHome
             // 
-            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Location = new System.Drawing.Point(59, 45);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(237, 47);
-            this.button4.TabIndex = 4;
-            this.button4.Text = "Pan Go home";
-            this.button4.UseVisualStyleBackColor = true;
+            this.btnPanGoHome.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPanGoHome.Location = new System.Drawing.Point(59, 45);
+            this.btnPanGoHome.Name = "btnPanGoHome";
+            this.btnPanGoHome.Size = new System.Drawing.Size(237, 47);
+            this.btnPanGoHome.TabIndex = 4;
+            this.btnPanGoHome.Text = "Pan Go home";
+            this.btnPanGoHome.UseVisualStyleBackColor = true;
+            this.btnPanGoHome.Click += new System.EventHandler(this.btnPanGoHome_Click);
             // 
             // btnTiltStop
             // 
@@ -606,6 +622,7 @@
             this.btnTiltStop.TabIndex = 3;
             this.btnTiltStop.Text = "Tilt Stop";
             this.btnTiltStop.UseVisualStyleBackColor = true;
+            this.btnTiltStop.Click += new System.EventHandler(this.btnTiltStop_Click);
             // 
             // btnPanStop
             // 
@@ -616,6 +633,7 @@
             this.btnPanStop.TabIndex = 2;
             this.btnPanStop.Text = "Pan Stop";
             this.btnPanStop.UseVisualStyleBackColor = true;
+            this.btnPanStop.Click += new System.EventHandler(this.btnPanStop_Click);
             // 
             // groupBox4
             // 
@@ -648,6 +666,7 @@
             this.btnOpenFirmwareFile.TabIndex = 1;
             this.btnOpenFirmwareFile.Text = "Open FW";
             this.btnOpenFirmwareFile.UseVisualStyleBackColor = true;
+            this.btnOpenFirmwareFile.Click += new System.EventHandler(this.btnOpenFirmwareFile_Click);
             // 
             // btnUpdateFirmwareToSelectedDevice
             // 
@@ -658,6 +677,7 @@
             this.btnUpdateFirmwareToSelectedDevice.TabIndex = 0;
             this.btnUpdateFirmwareToSelectedDevice.Text = "Update FW";
             this.btnUpdateFirmwareToSelectedDevice.UseVisualStyleBackColor = true;
+            this.btnUpdateFirmwareToSelectedDevice.Click += new System.EventHandler(this.btnUpdateFirmwareToSelectedDevice_Click);
             // 
             // label9
             // 
@@ -813,7 +833,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataBinding)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbSetTilt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbSetPan)).EndInit();
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvDeviceEnumrationInfo)).EndInit();
@@ -845,7 +865,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnSetTitl;
-        private System.Windows.Forms.TextBox txtBoxSetTilt;
+        private System.Windows.Forms.TextBox txtSetTilt;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnMovePanToDown;
         private System.Windows.Forms.Button btnMovePanToRight;
@@ -856,7 +876,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TrackBar trackBar2;
+        private System.Windows.Forms.TrackBar tbSetTilt;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txtStepSize;
         private System.Windows.Forms.GroupBox groupBox2;
@@ -891,8 +911,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn hwVersionStringDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn fwVersionStringDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn uidStringDataGridViewTextBoxColumn;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnTiltGoHome;
+        private System.Windows.Forms.Button btnPanGoHome;
         private System.Windows.Forms.Panel panel1;
     }
 }
